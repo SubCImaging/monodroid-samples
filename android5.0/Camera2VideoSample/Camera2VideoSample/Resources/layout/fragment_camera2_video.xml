@@ -21,6 +21,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/record" />
+        <TextView
+            android:text="test"
+            android:id="@+id/fps"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            />
         <ImageButton
             android:id="@+id/info"
             android:contentDescription="@string/description_info"
