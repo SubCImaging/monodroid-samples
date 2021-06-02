@@ -141,7 +141,7 @@ namespace SubCTools.Droid.Camera
         /// <summary>
         /// Gets or sets the step move distance as a fraction of the frame size (for step operations)
         /// </summary>
-        public float MoveStep { get; set; } = 0.5f;
+        public float MoveStep { get; set; } = 0.25f;
 
         /// <summary>
         /// Gets the speed at which the view rectangle pans
@@ -292,22 +292,22 @@ namespace SubCTools.Droid.Camera
         /// <summary>
         /// Step-Tilt the view rectangle down.
         /// </summary>
-        public void StepMoveDown() => SmoothTranslation(new System.Drawing.Point(0, (int)((float)ViewRect.Height() * MoveStep)));
+        public void StepMoveDown() => JumpTranslation(new System.Drawing.Point(0, (int)((float)ViewRect.Height() * MoveStep)));
 
         /// <summary>
         /// Step-Pan the view rectangle to the left.
         /// </summary>
-        public void StepMoveLeft() => SmoothTranslation(new System.Drawing.Point(-((int)((float)ViewRect.Width() * MoveStep)), 0));
+        public void StepMoveLeft() => JumpTranslation(new System.Drawing.Point(-((int)((float)ViewRect.Width() * MoveStep)), 0));
 
         /// <summary>
         /// Step-Pan the view rectangle to right.
         /// </summary>
-        public void StepMoveRight() => SmoothTranslation(new System.Drawing.Point((int)((float)ViewRect.Width() * MoveStep), 0));
+        public void StepMoveRight() => JumpTranslation(new System.Drawing.Point((int)((float)ViewRect.Width() * MoveStep), 0));
 
         /// <summary>
         /// Step-Tilt the view rectangle up.
         /// </summary>
-        public void StepMoveUp() => SmoothTranslation(new System.Drawing.Point(0, -((int)((float)ViewRect.Height() * MoveStep))));
+        public void StepMoveUp() => JumpTranslation(new System.Drawing.Point(0, -((int)((float)ViewRect.Height() * MoveStep))));
 
         /// <summary>
         /// Step-Zoom In
@@ -763,6 +763,21 @@ namespace SubCTools.Droid.Camera
                 rect.Top = (int)(rect.ExactCenterY() - (newHeight / 2));
                 rect.Bottom = rect.Top + (int)newHeight;
             }
+        }
+
+        private void JumpTranslation(System.Drawing.Point translation)
+        {
+            Task.Run(() =>
+            {
+                lock (MotionLock)
+                {
+                    // calculate the new target location and the steps to transition there
+                    var targetFrame = new Rect(ViewRect);
+                    targetFrame.Offset(translation.X, translation.Y);
+                    targetFrame.Restrain(previewRect);
+                    Zoom(targetFrame);
+                }
+            });
         }
 
         /// <summary>
