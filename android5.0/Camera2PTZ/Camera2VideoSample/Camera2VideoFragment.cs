@@ -246,6 +246,7 @@ namespace Camera2PTZ
 
             try
             {
+                SetUpMediaRecorder();
                 SurfaceTexture texture = textureView.SurfaceTexture;
                 //Assert.IsNotNull(texture);
                 texture.SetDefaultBufferSize(previewSize.Width, previewSize.Height);
@@ -355,6 +356,13 @@ namespace Camera2PTZ
             updatePreview();
         }
 
+        private File GetVideoFile(Context context)
+        {
+            string fileName = "video-" + DateTime.Now.ToString("yymmdd-hhmmss") + ".mp4"; //new filenamed based on date time
+            File file = new File(context.GetExternalFilesDir(null), fileName);
+            return file;
+        }
+
         private void Left_Click(object sender, EventArgs e)
         {
             ptz.PanLeft();
@@ -370,6 +378,27 @@ namespace Camera2PTZ
         private void setUpCaptureRequestBuilder(CaptureRequest.Builder builder)
         {
             builder.Set(CaptureRequest.ControlMode, new Java.Lang.Integer((int)ControlMode.Auto));
+        }
+
+        private void SetUpMediaRecorder()
+        {
+            if (null == Activity)
+                return;
+
+            mediaRecorder.SetVideoSource(VideoSource.Surface);
+            mediaRecorder.SetOutputFormat(OutputFormat.Mpeg4);
+            mediaRecorder.SetOutputFile(GetVideoFile(Activity).AbsolutePath);
+            mediaRecorder.SetVideoEncodingBitRate(10000000);
+            mediaRecorder.SetVideoFrameRate(30);
+            mediaRecorder.SetCaptureRate(30);
+
+            mediaRecorder.SetVideoSize(videoSize.Width, videoSize.Height);
+            mediaRecorder.SetVideoEncoder(VideoEncoder.H264);
+
+            int rotation = (int)Activity.WindowManager.DefaultDisplay.Rotation;
+            int orientation = ORIENTATIONS.Get(rotation);
+            mediaRecorder.SetOrientationHint(orientation);
+            mediaRecorder.Prepare();
         }
 
         private void StartBackgroundThread()
