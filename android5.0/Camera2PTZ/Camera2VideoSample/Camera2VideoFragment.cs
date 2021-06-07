@@ -1,17 +1,14 @@
-﻿using Android.App;
+using Android.App;
 using Android.Content;
-using Android.Content.Res;
 using Android.Graphics;
 using Android.Hardware.Camera2;
 using Android.Hardware.Camera2.Params;
-using Android.Media;
 using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.IO;
 using Java.Lang;
-using Java.Util;
 using Java.Util.Concurrent;
 using SubCTools.Droid.Camera;
 using System;
@@ -25,7 +22,7 @@ namespace Camera2PTZ
         public CaptureRequest.Builder builder;
         public CameraDevice cameraDevice;
         public Semaphore cameraOpenCloseLock = new Semaphore(1);
-        public MediaRecorder mediaRecorder;
+
         public CameraCaptureSession previewSession;
 
         // AutoFitTextureView for camera preview
@@ -35,15 +32,13 @@ namespace Camera2PTZ
         private Handler backgroundHandler;
         private HandlerThread backgroundThread;
 
-        // Button to record video
-        private Button buttonVideo;
-
         private Button down;
         private Button left;
         private SparseIntArray ORIENTATIONS = new SparseIntArray();
         private CaptureRequest.Builder previewBuilder;
-        private Size previewSize;
+
         private DigitalPTZ ptz;
+
         private Button right;
         private Size sensorSize;
 
@@ -54,7 +49,6 @@ namespace Camera2PTZ
         private MySurfaceTextureListener surfaceTextureListener;
 
         private Button up;
-        private Size videoSize;
         private Button zoomin;
         private Button zoomout;
 
@@ -78,13 +72,13 @@ namespace Camera2PTZ
         //Configures the neccesary matrix transformation to apply to the textureView
         public void configureTransform(int viewWidth, int viewHeight)
         {
-            if (null == Activity || null == previewSize || null == textureView)
+            if (null == Activity || null == sensorSize || null == textureView)
                 return;
 
             int rotation = (int)Activity.WindowManager.DefaultDisplay.Rotation;
             var matrix = new Matrix();
             var viewRect = new RectF(0, 0, viewWidth, viewHeight);
-            var bufferRect = new RectF(0, 0, previewSize.Height, previewSize.Width);
+            var bufferRect = new RectF(0, 0, sensorSize.Height, sensorSize.Width);
             float centerX = viewRect.CenterX();
             float centerY = viewRect.CenterY();
             if ((int)SurfaceOrientation.Rotation90 == rotation || (int)SurfaceOrientation.Rotation270 == rotation)
@@ -92,8 +86,8 @@ namespace Camera2PTZ
                 bufferRect.Offset((centerX - bufferRect.CenterX()), (centerY - bufferRect.CenterY()));
                 matrix.SetRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.Fill);
                 float scale = System.Math.Max(
-                    (float)viewHeight / previewSize.Height,
-                    (float)viewHeight / previewSize.Width);
+                    (float)viewHeight / sensorSize.Height,
+                    (float)viewHeight / sensorSize.Width);
                 matrix.PostScale(scale, scale, centerX, centerY);
                 matrix.PostRotate(90 * (rotation - 2), centerX, centerY);
             }
@@ -102,33 +96,6 @@ namespace Camera2PTZ
 
         public void OnClick(View view)
         {
-            switch (view.Id)
-            {
-                //case Resource.Id.video:
-                //    {
-                //        if (isRecordingVideo)
-                //        {
-                //            stopRecordingVideo();
-                //        }
-                //        else
-                //        {
-                //            StartRecordingVideo();
-                //        }
-                //        break;
-                //    }
-
-                //case Resource.Id.info:
-                //    {
-                //        if (null != Activity)
-                //        {
-                //            new AlertDialog.Builder(Activity)
-                //                .SetMessage(Resource.String.intro_message)
-                //                .SetPositiveButton(Android.Resource.String.Ok, (Android.Content.IDialogInterfaceOnClickListener)null)
-                //                .Show();
-                //        }
-                //        break;
-                //    }
-            }
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -195,32 +162,11 @@ namespace Camera2PTZ
                     System.Console.WriteLine(item.Name);
                 }
 
-                //)
-                var framerates = (Java.Lang.Object[])characteristics.Get(CameraCharacteristics.ControlAeAvailableTargetFpsRanges);
-
-                foreach (var item in framerates)
-                {
-                    var f = (Android.Util.Range)item;
-                    System.Console.WriteLine(f);
-                }
-
-                videoSize = ChooseVideoSize(map.GetOutputSizes(Class.FromType(typeof(MediaRecorder))));
-                previewSize = ChooseOptimalSize(map.GetOutputSizes(Class.FromType(typeof(MediaRecorder))), width, height, videoSize);
-                int orientation = (int)Resources.Configuration.Orientation;
-                if (orientation == (int)Android.Content.Res.Orientation.Landscape)
-                {
-                    textureView.SetAspectRatio(previewSize.Width, previewSize.Height);
-                }
-                else
-                {
-                    textureView.SetAspectRatio(previewSize.Height, previewSize.Width);
-                }
-                configureTransform(width, height);
-                mediaRecorder = new MediaRecorder();
                 manager.OpenCamera(cameraId, stateListener, null);
 
-                var streamMap = (StreamConfigurationMap)characteristics.Get(CameraCharacteristics.ScalerStreamConfigurationMap);
-                sensorSize = streamMap.GetOutputSizes((int)ImageFormatType.RawSensor).First();
+                sensorSize = map.GetOutputSizes(Class.FromType(typeof(SurfaceTexture))).First();
+
+                textureView.SetAspectRatio(sensorSize.Width, sensorSize.Height);
             }
             catch (CameraAccessException)
             {
@@ -241,27 +187,21 @@ namespace Camera2PTZ
         //Start the camera preview
         public void startPreview()
         {
-            if (null == cameraDevice || !textureView.IsAvailable || null == previewSize)
+            if (null == cameraDevice || !textureView.IsAvailable || null == sensorSize)
                 return;
 
             try
             {
-                SetUpMediaRecorder();
                 SurfaceTexture texture = textureView.SurfaceTexture;
-                //Assert.IsNotNull(texture);
-                texture.SetDefaultBufferSize(previewSize.Width, previewSize.Height);
+                texture.SetDefaultBufferSize(sensorSize.Width, sensorSize.Height);
                 previewBuilder = cameraDevice.CreateCaptureRequest(CameraTemplate.Record);
                 var surfaces = new List<Surface>();
                 var previewSurface = new Surface(texture);
                 surfaces.Add(previewSurface);
                 previewBuilder.AddTarget(previewSurface);
 
-                var recorderSurface = mediaRecorder.Surface;
-                surfaces.Add(recorderSurface);
-                previewBuilder.AddTarget(recorderSurface);
-
                 cameraDevice.CreateCaptureSession(surfaces, new PreviewCaptureStateCallback(this), backgroundHandler);
-                ptz = new DigitalPTZ(previewBuilder, new System.Drawing.Size(sensorSize.Height, sensorSize.Width));
+                ptz = new DigitalPTZ(previewBuilder, new System.Drawing.Size(sensorSize.Width, sensorSize.Height));
             }
             catch (CameraAccessException e)
             {
@@ -292,38 +232,6 @@ namespace Camera2PTZ
             }
         }
 
-        private Size ChooseOptimalSize(Size[] choices, int width, int height, Size aspectRatio)
-        {
-            var bigEnough = new List<Size>();
-            int w = aspectRatio.Width;
-            int h = aspectRatio.Height;
-            foreach (Size option in choices)
-            {
-                if (option.Height == option.Width * h / w &&
-                    option.Width >= width && option.Height >= height)
-                    bigEnough.Add(option);
-            }
-
-            if (bigEnough.Count > 0)
-                return (Size)Collections.Min(bigEnough, new CompareSizesByArea());
-            else
-            {
-                Log.Error(TAG, "Couldn't find any suitable preview size");
-                return choices[0];
-            }
-        }
-
-        private Size ChooseVideoSize(Size[] choices)
-        {
-            foreach (Size size in choices)
-            {
-                if (size.Width == size.Height * 4 / 3 && size.Width <= 1000)
-                    return size;
-            }
-            Log.Error(TAG, "Couldn't find any suitable video size");
-            return choices[choices.Length - 1];
-        }
-
         private void CloseCamera()
         {
             try
@@ -333,11 +241,6 @@ namespace Camera2PTZ
                 {
                     cameraDevice.Close();
                     cameraDevice = null;
-                }
-                if (null != mediaRecorder)
-                {
-                    mediaRecorder.Release();
-                    mediaRecorder = null;
                 }
             }
             catch (InterruptedException e)
@@ -356,13 +259,6 @@ namespace Camera2PTZ
             updatePreview();
         }
 
-        private File GetVideoFile(Context context)
-        {
-            string fileName = "video-" + DateTime.Now.ToString("yymmdd-hhmmss") + ".mp4"; //new filenamed based on date time
-            File file = new File(context.GetExternalFilesDir(null), fileName);
-            return file;
-        }
-
         private void Left_Click(object sender, EventArgs e)
         {
             ptz.PanLeft();
@@ -378,27 +274,6 @@ namespace Camera2PTZ
         private void setUpCaptureRequestBuilder(CaptureRequest.Builder builder)
         {
             builder.Set(CaptureRequest.ControlMode, new Java.Lang.Integer((int)ControlMode.Auto));
-        }
-
-        private void SetUpMediaRecorder()
-        {
-            if (null == Activity)
-                return;
-
-            mediaRecorder.SetVideoSource(VideoSource.Surface);
-            mediaRecorder.SetOutputFormat(OutputFormat.Mpeg4);
-            mediaRecorder.SetOutputFile(GetVideoFile(Activity).AbsolutePath);
-            mediaRecorder.SetVideoEncodingBitRate(10000000);
-            mediaRecorder.SetVideoFrameRate(30);
-            mediaRecorder.SetCaptureRate(30);
-
-            mediaRecorder.SetVideoSize(videoSize.Width, videoSize.Height);
-            mediaRecorder.SetVideoEncoder(VideoEncoder.H264);
-
-            int rotation = (int)Activity.WindowManager.DefaultDisplay.Rotation;
-            int orientation = ORIENTATIONS.Get(rotation);
-            mediaRecorder.SetOrientationHint(orientation);
-            mediaRecorder.Prepare();
         }
 
         private void StartBackgroundThread()
