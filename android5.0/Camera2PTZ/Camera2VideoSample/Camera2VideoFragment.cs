@@ -16,7 +16,6 @@ using SubCTools.Droid.Camera;
 using SubCTools.Droid.Enums;
 using SubCTools.Droid.Listeners;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Camera2PTZ
@@ -27,12 +26,9 @@ namespace Camera2PTZ
         public CameraDevice cameraDevice;
         public Semaphore cameraOpenCloseLock = new Semaphore(1);
 
-        //public CameraCaptureSession previewSession;
-
         // AutoFitTextureView for camera preview
         public AutoFitTextureView textureView;
 
-        //private const string TAG = "Camera2VideoFragment";
         private Handler backgroundHandler;
 
         private HandlerThread backgroundThread;
@@ -41,7 +37,6 @@ namespace Camera2PTZ
         private Button down;
         private Button left;
         //private SparseIntArray ORIENTATIONS = new SparseIntArray();
-        //private CaptureRequest.Builder previewBuilder;
 
         private SubCDigitalPTZ ptz;
 
@@ -203,15 +198,8 @@ namespace Camera2PTZ
 
             try
             {
-                SurfaceTexture texture = textureView.SurfaceTexture;
+                var texture = textureView.SurfaceTexture;
                 texture.SetDefaultBufferSize(sensorSize.Width, sensorSize.Height);
-                //previewBuilder = cameraDevice.CreateCaptureRequest(CameraTemplate.Record);
-                var surfaces = new List<Surface>();
-                var previewSurface = new Surface(texture);
-                surfaces.Add(previewSurface);
-                //previewBuilder.AddTarget(previewSurface);
-
-                //cameraDevice.CreateCaptureSession(surfaces, new PreviewCaptureStateCallback(this), backgroundHandler);
 
                 var sessionCallbackThread = new SubCHandlerThread(new HandlerThread("SessionCallbackThread"));
                 sessionCallbackThread.Start();
@@ -220,6 +208,7 @@ namespace Camera2PTZ
                 captureSession = new SubCCaptureSession(new SubCCameraDevice(cameraDevice), handler);
                 captureSession.UpdatePersistentSurface(SurfaceTypes.Preview, new SubCSurface(new Surface(texture)));
                 captureSession.Repeat();
+
                 ptz = new SubCDigitalPTZ(captureSession, new System.Drawing.Size(sensorSize.Width, sensorSize.Height));
             }
             catch (CameraAccessException e)
@@ -253,39 +242,19 @@ namespace Camera2PTZ
             }
         }
 
-        //    try
-        //    {
-        //        setUpCaptureRequestBuilder(previewBuilder);
-        //        HandlerThread thread = new HandlerThread("CameraPreview");
-        //        thread.Start();
-        //        previewSession.SetRepeatingRequest(previewBuilder.Build(), null, backgroundHandler);
-        //    }
-        //    catch (CameraAccessException e)
-        //    {
-        //        e.PrintStackTrace();
-        //    }
-        //}
         private void Down_Click(object sender, EventArgs e)
         {
             ptz.TiltDown();
-            //captureSession.Repeat();
         }
 
-        //Update the preview
-        //public void updatePreview()
-        //{
-        //    if (null == cameraDevice)
-        //        return;
         private void Left_Click(object sender, EventArgs e)
         {
             ptz.PanLeft();
-            //captureSession.Repeat();
         }
 
         private void Right_Click(object sender, EventArgs e)
         {
             ptz.PanRight();
-            //captureSession.Repeat();
         }
 
         private void StartBackgroundThread()
@@ -318,10 +287,6 @@ namespace Camera2PTZ
             cameraDevice = e;
             startPreview();
             cameraOpenCloseLock.Release();
-            //if (null != textureView)
-            //{
-            //    configureTransform(textureView.Width, textureView.Height);
-            //}
         }
 
         private void StopBackgroundThread()
@@ -342,19 +307,16 @@ namespace Camera2PTZ
         private void Up_Click(object sender, EventArgs e)
         {
             ptz.TiltUp();
-            //captureSession.Repeat();
         }
 
         private void Zoomin_Click(object sender, EventArgs e)
         {
             ptz.ZoomIn();
-            //captureSession.Repeat();
         }
 
         private void Zoomout_Click(object sender, EventArgs e)
         {
             ptz.ZoomOut();
-            //captureSession.Repeat();
         }
     }
 }
