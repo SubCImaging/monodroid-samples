@@ -199,7 +199,7 @@ namespace Camera2PTZ
             try
             {
                 var texture = textureView.SurfaceTexture;
-                //texture.SetDefaultBufferSize(sensorSize.Width, sensorSize.Height);
+                texture.SetDefaultBufferSize(sensorSize.Width, sensorSize.Height);
 
                 var sessionCallbackThread = new SubCHandlerThread(new HandlerThread("SessionCallbackThread"));
                 sessionCallbackThread.Start();
@@ -210,6 +210,7 @@ namespace Camera2PTZ
                 captureSession.Repeat();
 
                 ptz = new SubCDigitalPTZ(captureSession, new System.Drawing.Size(sensorSize.Width, sensorSize.Height));
+                ptz.UpdateStepMotion(SubCDigitalPTZ.MotionTypes.Continuous);
             }
             catch (CameraAccessException e)
             {
