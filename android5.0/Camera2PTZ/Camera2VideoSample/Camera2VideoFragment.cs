@@ -199,7 +199,7 @@ namespace Camera2PTZ
             try
             {
                 var texture = textureView.SurfaceTexture;
-                texture.SetDefaultBufferSize(sensorSize.Width, sensorSize.Height);
+                //texture.SetDefaultBufferSize(sensorSize.Width, sensorSize.Height);
 
                 var sessionCallbackThread = new SubCHandlerThread(new HandlerThread("SessionCallbackThread"));
                 sessionCallbackThread.Start();
