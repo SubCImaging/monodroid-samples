@@ -1,0 +1,16 @@
+﻿using System;
+
+namespace SubCTools.Models
+{
+    public class AddressCompare : IEquatable<Tuple<EthernetAddress, string>>
+    {
+        public int Compare(Tuple<EthernetAddress, string> x, Tuple<EthernetAddress, string> y)
+            => x.Item1.Address.ToString() == y.Item1.Address.ToString() && x.Item1.Port == y.Item1.Port && x.Item2 == y.Item2 ? 1 : 0;
+
+
+        public bool Equals(Tuple<EthernetAddress, string> other)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

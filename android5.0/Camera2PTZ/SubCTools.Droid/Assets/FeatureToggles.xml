@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SubC>
+  <DiveLog Debug="true" Dev="true" Production="true" />
+  <DataLog Debug="true" Dev="true" Production="true" />
+  <Onvif Debug="true" Dev="true" Production="false" />
+</SubC>

@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29424.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubCTools", "SubCTools.csproj", "{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Obfuscated|Any CPU = Obfuscated|Any CPU
+		Obfuscated|x86 = Obfuscated|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Debug|x86.ActiveCfg = Debug|x86
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Debug|x86.Build.0 = Debug|x86
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Obfuscated|Any CPU.ActiveCfg = Obfuscated|Any CPU
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Obfuscated|Any CPU.Build.0 = Obfuscated|Any CPU
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Obfuscated|x86.ActiveCfg = Obfuscated|x86
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Obfuscated|x86.Build.0 = Obfuscated|x86
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Release|Any CPU.Build.0 = Release|Any CPU
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Release|x86.ActiveCfg = Release|x86
+		{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {363F4C18-2B0B-4C2F-B1A5-D807F4F4D04C}
+	EndGlobalSection
+EndGlobal

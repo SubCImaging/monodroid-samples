@@ -51,6 +51,7 @@
     <MandroidI18n />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Android.Export" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -68,6 +69,7 @@
     <Compile Include="MySurfaceTextureListener.cs" />
     <Compile Include="PreviewCaptureStateCallback.cs" />
     <Compile Include="MyCameraStateCallback.cs" />
+    <Compile Include="SubCDigitalPTZ.cs" />
     <Compile Include="Vector3.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -102,5 +104,14 @@
     <AndroidResource Include="Resources\layout\fragment_camera2_video.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SubCTools.Droid\SubCTools.Droid.csproj">
+      <Project>{3a4111e9-ef7a-4ef0-983d-0e1a15d7f84f}</Project>
+      <Name>SubCTools.Droid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubCTools\SubCTools.csproj">
+      <Project>{341e689c-dafe-4fc8-99a5-8df94c3b0444}</Project>
+      <Name>SubCTools</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

@@ -1,0 +1,10 @@
+bin/
+obj/
+.vs/
+*.bak
+packages/
+CodeCoverage/
+
+\.axoCover/*
+
+*StyleCop\.Cache

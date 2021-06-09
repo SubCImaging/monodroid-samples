@@ -1,0 +1,348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3A4111E9-EF7A-4EF0-983D-0E1A15D7F84F}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SubCTools.Droid</RootNamespace>
+    <AssemblyName>SubCTools.Droid</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+    <CodeAnalysisRuleSet>SubCTools.Droid.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\SubCTools.Droid.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>SubCTools.Droid.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EmbedIO, Version=3.4.3.0, Culture=neutral, PublicKeyToken=5e5f048b6e04267e, processorArchitecture=MSIL">
+      <HintPath>..\packages\EmbedIO.3.4.3\lib\netstandard2.0\EmbedIO.dll</HintPath>
+    </Reference>
+    <Reference Include="F23.StringSimilarity, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\F23.StringSimilarity.2.0.0\lib\F23.StringSimilarity.dll</HintPath>
+    </Reference>
+    <Reference Include="Java.Interop" />
+    <Reference Include="MediaCaptureSdk, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\MediaCaptureSdk.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Routing.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Routing.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Headers, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.Headers.2.2.0\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Export" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite-net, Version=1.7.335.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\sqlite-net-pcl.1.7.335\lib\netstandard2.0\SQLite-net.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_v2, Version=2.0.3.851, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.2.0.3\lib\netstandard2.0\SQLitePCLRaw.batteries_v2.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.core, Version=2.0.4.976, Culture=neutral, PublicKeyToken=1488e028ca7ab535, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.core.2.0.4\lib\netstandard2.0\SQLitePCLRaw.core.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.lib.e_sqlite3.android, Version=2.0.4.976, Culture=neutral, PublicKeyToken=e4ad490600e2234c, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.lib.e_sqlite3.android.2.0.4\lib\monoandroid80\SQLitePCLRaw.lib.e_sqlite3.android.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.e_sqlite3, Version=2.0.3.851, Culture=neutral, PublicKeyToken=9c301db686d0bd12, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.provider.e_sqlite3.2.0.3\lib\netstandard2.0\SQLitePCLRaw.provider.e_sqlite3.dll</HintPath>
+    </Reference>
+    <Reference Include="Swan.Lite, Version=3.0.0.0, Culture=neutral, PublicKeyToken=30c707c872729fff, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unosquare.Swan.Lite.3.0.0\lib\netstandard2.0\Swan.Lite.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.4.5.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UsbSerialForAndroid, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LusoVU.XamarinUsbSerialForAndroid.0.2.3\lib\MonoAndroid\UsbSerialForAndroid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v8.RenderScript, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Android.Support.v8.RenderScript.28.0.0.3\lib\monoandroid90\Xamarin.Android.Support.v8.RenderScript.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Camera\AndroidMediaRecorder.cs" />
+    <Compile Include="Camera\Grenadier.cs" />
+    <Compile Include="Camera\OldSubCMediaRecorder.cs" />
+    <Compile Include="Camera\SubCImageSaver.cs" />
+    <Compile Include="Controllers\RecordingController.cs" />
+    <Compile Include="Controllers\StillController.cs" />
+    <Compile Include="Services\RecordingService.cs" />
+    <Compile Include="Services\StillService.cs" />
+    <Compile Include="Converters\StringToStillResolutionConverter.cs" />
+    <Compile Include="Converters\StringToVideoResolutionConverter.cs" />
+    <Compile Include="Handlers\MediaCaptureSdkHandler.cs" />
+    <Compile Include="Helpers\CompareSizesByArea.cs" />
+    <Compile Include="Helpers\LoadBitmapThread.cs" />
+    <Compile Include="Helpers\RayfinLicense.cs" />
+    <Compile Include="Interfaces\IImageSaver.cs" />
+    <Compile Include="Interfaces\IFocusLens.cs" />
+    <Compile Include="Camera\Rayfin.cs" />
+    <Compile Include="Communicators\AndroidCommunicatorAddress.cs" />
+    <Compile Include="Enums\Governor.cs" />
+    <Compile Include="EventArguments\CaptureEventArgs.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\AndroidDiskSpaceMonitor.cs" />
+    <Compile Include="Interfaces\ICameraCaptureListener.cs" />
+    <Compile Include="Interfaces\ICameraCaptureSession.cs" />
+    <Compile Include="Interfaces\ICameraDevice.cs" />
+    <Compile Include="Interfaces\ICameraSessionCallback.cs" />
+    <Compile Include="Interfaces\ICaptureBuilder.cs" />
+    <Compile Include="Interfaces\ICaptureResult.cs" />
+    <Compile Include="IO\AuxDevices\KongsbergPanTiltAux.cs" />
+    <Compile Include="IO\AuxDevices\SkateMk2.cs" />
+    <Compile Include="IO\Sensors\Sensors.cs" />
+    <Compile Include="Listeners\PowerListeners.cs" />
+    <Compile Include="Listeners\SubCCaptureResult.cs" />
+    <Compile Include="Managers\GrenadierManager.cs" />
+    <Compile Include="Managers\EthernetManager.cs" />
+    <Compile Include="Helpers\Logger.cs" />
+    <Compile Include="Managers\RayfinManager.cs" />
+    <Compile Include="Managers\SerialManager.cs" />
+    <Compile Include="Helpers\Shell.cs" />
+    <Compile Include="Managers\StaticIPManager.cs" />
+    <Compile Include="Managers\ThermalManager.cs" />
+    <Compile Include="Models\WhiteBalancePreset.cs" />
+    <Compile Include="Properties\RayfinDatabaseContract.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RayfinDatabaseContract.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RayfinShell.cs" />
+    <Compile Include="Attributes\CameraState.cs" />
+    <Compile Include="AutoFitTextureView.cs" />
+    <Compile Include="Camera\SubCMediaRecorder.cs" />
+    <Compile Include="Enums\RayfinStorageType.cs" />
+    <Compile Include="EventArguments\NasConnectionChangedEventArgs.cs" />
+    <Compile Include="IO\AuxData.cs" />
+    <Compile Include="Camera\DigitalPTZ.cs" />
+    <Compile Include="Camera\HistogramGenerator.cs" />
+    <Compile Include="IO\AuxDevices\Aquorea.cs" />
+    <Compile Include="IO\AuxDevices\AquoreaMk3.cs" />
+    <Compile Include="IO\AuxDevices\AuxDevice.cs" />
+    <Compile Include="IO\AuxDevices\AuxDeviceArgs.cs" />
+    <Compile Include="IO\AuxDevices\Controller.cs" />
+    <Compile Include="IO\AuxDevices\HexController.cs" />
+    <Compile Include="IO\AuxDevices\ROSPT.cs" />
+    <Compile Include="IO\AuxDevices\Skate.cs" />
+    <Compile Include="IO\AuxInfo.cs" />
+    <Compile Include="IO\AuxInputManager.cs" />
+    <Compile Include="IO\AuxInput.cs" />
+    <Compile Include="IO\ExpansionOutput.cs" />
+    <Compile Include="IO\ExpansionPort.cs" />
+    <Compile Include="IO\HexInfo.cs" />
+    <Compile Include="Camera\ShutterSpeed.cs" />
+    <Compile Include="Lenses\StockLens.cs" />
+    <Compile Include="Camera\SubCCameraCharacteristics.cs" />
+    <Compile Include="Camera\VideoSnapshot.cs" />
+    <Compile Include="Communicators\LogcatListener.cs" />
+    <Compile Include="Communicators\EthernetRouter.cs" />
+    <Compile Include="Communicators\UDPServicer.cs" />
+    <Compile Include="Converters\StringToAWB.cs" />
+    <Compile Include="Converters\StringToEncoder.cs" />
+    <Compile Include="Converters\StringToOutputFormat.cs" />
+    <Compile Include="Converters\StringToResolution.cs" />
+    <Compile Include="Enums\PhotoModes.cs" />
+    <Compile Include="EventArguments\CaptureRequestArgs.cs" />
+    <Compile Include="EventArguments\ImageAvailableEventArgs.cs" />
+    <Compile Include="EventArguments\PictureArgs.cs" />
+    <Compile Include="IO\ExpansionBoard.cs" />
+    <Compile Include="Extensions\ByteExtentions.cs" />
+    <Compile Include="Callbacks\CameraSessionCallback.cs" />
+    <Compile Include="Callbacks\CameraStateCallback.cs" />
+    <Compile Include="Camera\ExposureSettings.cs" />
+    <Compile Include="Camera\HDRProcessor.cs" />
+    <Compile Include="Camera\Intervals.cs" />
+    <Compile Include="Camera\RecordingHandler.cs" />
+    <Compile Include="Camera\StillHandler.cs" />
+    <Compile Include="Communicators\AndroidSerial.cs" />
+    <Compile Include="Communicators\CommunicationManager.cs" />
+    <Compile Include="Communicators\DeviceListActivity.cs" />
+    <Compile Include="IO\SubCTeensy.cs" />
+    <Compile Include="Communicators\UsbManagerExtensions.cs" />
+    <Compile Include="Converters\MeasurementToCM.cs" />
+    <Compile Include="Converters\EnumerableToStrings.cs" />
+    <Compile Include="Converters\RangeToString.cs" />
+    <Compile Include="Converters\StringToDirectory.cs" />
+    <Compile Include="Converters\StringToFlash.cs" />
+    <Compile Include="Converters\StringToImageFormatType.cs" />
+    <Compile Include="Converters\StringToSizeConverter.cs" />
+    <Compile Include="DroidDevices.cs" />
+    <Compile Include="DroidSystem.cs" />
+    <Compile Include="Enums\Modes.cs" />
+    <Compile Include="EventArguments\CameraErrorArgs.cs" />
+    <Compile Include="EventArguments\PictureTakenArgs.cs" />
+    <Compile Include="EventArguments\SurfaceTextureAvailableArgs.cs" />
+    <Compile Include="Extensions\DirectoryInfoExtensions.cs" />
+    <Compile Include="Extensions\RectExtensions.cs" />
+    <Compile Include="Helpers\AliasManager.cs" />
+    <Compile Include="Helpers\AndroidDispatcher.cs" />
+    <Compile Include="Helpers\Camera.cs" />
+    <Compile Include="Helpers\CommandAlias.cs" />
+    <Compile Include="Helpers\FileObserver.cs" />
+    <Compile Include="Helpers\FocusResult.cs" />
+    <Compile Include="Helpers\NetworkTools.cs" />
+    <Compile Include="Interfaces\ICameraCharacteristics.cs" />
+    <Compile Include="Interfaces\ICameraManager.cs" />
+    <Compile Include="Interfaces\IImageListener.cs" />
+    <Compile Include="Interfaces\IImageReaderGrabber.cs" />
+    <Compile Include="Interfaces\IImageReader.cs" />
+    <Compile Include="Interfaces\IStreamMap.cs" />
+    <Compile Include="Locale.cs" />
+    <Compile Include="IO\ExpansionLookup.cs" />
+    <Compile Include="IO\TeensyInfo.cs" />
+    <Compile Include="IO\TeensyListener.cs" />
+    <Compile Include="IO\AuxDevices\ForumPanTilt.cs" />
+    <Compile Include="Models\SubCCaptureBuilder.cs" />
+    <Compile Include="Models\SubCImageReader.cs" />
+    <Compile Include="Models\SubCImageReaderGrabber.cs" />
+    <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Nas.cs" />
+    <Compile Include="Helpers\PictureMetadata.cs" />
+    <Compile Include="Helpers\Range.cs" />
+    <Compile Include="Helpers\ValidFilename.cs" />
+    <Compile Include="Listeners\MediaRecorderListener.cs" />
+    <Compile Include="ObfuscationSettings.cs" />
+    <Compile Include="Rtsp\IMediaCapturer.cs" />
+    <Compile Include="Rtsp\IMediaCaptureSdkHandler.cs" />
+    <Compile Include="Rtsp\IStreamable.cs" />
+    <Compile Include="Rtsp\MediaCaptureCallback.cs" />
+    <Compile Include="Rtsp\MediaConfigBuilder.cs" />
+    <Compile Include="Rtsp\RtspServer.cs" />
+    <Compile Include="Rtsp\SubCMediaCapturer.cs" />
+    <Compile Include="Rtsp\SubCMediaCaptureSdkHandler.cs" />
+    <Compile Include="Security\Encryption.cs" />
+    <Compile Include="Settings\SqlSettings.cs" />
+    <Compile Include="SQLite\GoogleSQLiteConnection.cs" />
+    <Compile Include="SQLite\RayfinDatabaseOpenHelper.cs" />
+    <Compile Include="SQLite\SqlInfo.cs" />
+    <Compile Include="SubCCameraCaptureSession.cs" />
+    <Compile Include="SubCCameraDevice.cs" />
+    <Compile Include="SubCCaptureRequestKey.cs" />
+    <Compile Include="SubCCaptureResultKey.cs" />
+    <Compile Include="SubCCaptureSession.cs" />
+    <Compile Include="SubCGPIO.cs" />
+    <Compile Include="SubCHandler.cs" />
+    <Compile Include="SubCHandlerThread.cs" />
+    <Compile Include="SubCLooper.cs" />
+    <Compile Include="SubCSensorManager.cs" />
+    <Compile Include="Listeners\DeviceListener.cs" />
+    <Compile Include="Listeners\CameraCaptureListener.cs" />
+    <Compile Include="Listeners\ImageAvailableListener.cs" />
+    <Compile Include="Listeners\SensorListener.cs" />
+    <Compile Include="Listeners\SurfaceTextureListener.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubCServiceDiscovery.cs" />
+    <Compile Include="SubCSurface.cs" />
+    <Compile Include="Thumbnail.cs" />
+    <Compile Include="Tools\GreenPictureDetector.cs" />
+    <Compile Include="Tools\NIST.cs" />
+    <Compile Include="VideoController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Resources\AboutResources.txt" />
+    <AdditionalFiles Include="stylecop.json" />
+    <None Include="SubCTools.Droid.ruleset" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SubCTools\SubCTools.csproj">
+      <Project>{341e689c-dafe-4fc8-99a5-8df94c3b0444}</Project>
+      <Name>SubCTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\FeatureToggles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\RayfinDatabaseContract.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RayfinDatabaseContract.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Import Project="..\packages\Xamarin.Android.Support.v8.RenderScript.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.v8.RenderScript.targets" Condition="Exists('..\packages\Xamarin.Android.Support.v8.RenderScript.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.v8.RenderScript.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Xamarin.Android.Support.v8.RenderScript.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.v8.RenderScript.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Android.Support.v8.RenderScript.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.v8.RenderScript.targets'))" />
+  </Target>
+</Project>

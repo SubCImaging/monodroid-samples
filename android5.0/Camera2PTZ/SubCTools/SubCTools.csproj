@@ -1,0 +1,536 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{341E689C-DAFE-4FC8-99A5-8DF94C3B0444}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SubCTools</RootNamespace>
+    <AssemblyName>SubCTools</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <EazfuscatorCompatibilityVersion>2020.4</EazfuscatorCompatibilityVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>8.0</LangVersion>
+    <CodeAnalysisRuleSet>SubCTools.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <LangVersion>8.0</LangVersion>
+    <CodeAnalysisRuleSet>SubCTools.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>SubCTools.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>SubCTools.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Obfuscated|AnyCPU'">
+    <OutputPath>bin\Obfuscated\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>SubCTools.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Obfuscated|x86'">
+    <OutputPath>bin\x86\Obfuscated\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>SubCTools.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\AliasAttribute.cs" />
+    <Compile Include="Attributes\CancelWhenAttribute.cs" />
+    <Compile Include="Attributes\ConverterAttribute.cs" />
+    <Compile Include="Attributes\OutputConverter.cs" />
+    <Compile Include="Attributes\PropertyConverterAttribute.cs" />
+    <Compile Include="Attributes\RemoteCommand.cs" />
+    <Compile Include="Attributes\RemoteState.cs" />
+    <Compile Include="CancelCondition.cs" />
+    <Compile Include="CancelCondition{T}.cs" />
+    <Compile Include="ColorsLibrary.cs" />
+    <Compile Include="CommandInterpreter.cs" />
+    <Compile Include="Communicators\EventArgs\CommunicationEventArgs.cs" />
+    <Compile Include="Communicators\EventArgs\ConnectionChangedEventArgs.cs" />
+    <Compile Include="Communicators\EventArgs\DataReceivedEventArgs.cs" />
+    <Compile Include="Communicators\EventArgs\DataSentEventArgs.cs" />
+    <Compile Include="Communicators\EventArgs\DataSentToEventArgs.cs" />
+    <Compile Include="Communicators\EventArgs\SendingEventArgs.cs" />
+    <Compile Include="Communicators\Interfaces\IConnectable.cs" />
+    <Compile Include="Communicators\Interfaces\IMiniCommunicator.cs" />
+    <Compile Include="Communicators\Interfaces\ISenderReceiver.cs" />
+    <Compile Include="Communicators\Interfaces\ISerialPort.cs" />
+    <Compile Include="Communicators\Interfaces\ISocket.cs" />
+    <Compile Include="Communicators\Interfaces\ITcpClient.cs" />
+    <Compile Include="Communicators\Interfaces\ITcpListener.cs" />
+    <Compile Include="Communicators\MockCommunicator.cs" />
+    <Compile Include="Communicators\Modules\SubCSocket.cs" />
+    <Compile Include="Communicators\Modules\SubCTcpClient.cs" />
+    <Compile Include="Communicators\Modules\SubCTcpListener.cs" />
+    <Compile Include="Communicators\SubCSerialPort.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Communicators\SubCTCPBase.cs" />
+    <Compile Include="Communicators\TCPState.cs" />
+    <Compile Include="Converters\JsonConverters\DirectoryInfoJsonConverter.cs" />
+    <Compile Include="Converters\JsonConverters\GenericJsonConvert.cs" />
+    <Compile Include="Converters\JsonConverters\SubCVersionConverter.cs" />
+    <Compile Include="Converters\StringToConnectionStatus.cs" />
+    <Compile Include="Converters\StringToDateTime.cs" />
+    <Compile Include="Converters\StringToFileInfo.cs" />
+    <Compile Include="Converters\StringToIPAddress.cs" />
+    <Compile Include="Converters\StringToLensType.cs" />
+    <Compile Include="Converters\StringToRayfinClockMode.cs" />
+    <Compile Include="Converters\StringToUri.cs" />
+    <Compile Include="Converters\StringToVersion.cs" />
+    <Compile Include="Converters\StringToVideoFormat.cs" />
+    <Compile Include="DataTypes\Vector3.cs" />
+    <Compile Include="DiveLog\DataEntry.cs" />
+    <Compile Include="DiveLog\IDiveRecorder.cs" />
+    <Compile Include="DiveLog\Inspection.cs" />
+    <Compile Include="DiveLog\Interfaces\IDiveCreator.cs" />
+    <Compile Include="DiveLog\Interfaces\IDiveOpenable.cs" />
+    <Compile Include="DiveLog\IOHelper.cs" />
+    <Compile Include="Helpers\PortChecker.cs" />
+    <Compile Include="Interfaces\IPortChecker.cs" />
+    <Compile Include="Models\Definition.cs" />
+    <Compile Include="Settings\Interfaces\IFileCRUD.cs" />
+    <Compile Include="Settings\JSONFileCRUD.cs" />
+    <Compile Include="Attributes\PrimaryKey.cs" />
+    <Compile Include="DiveLog\StillEntry.cs" />
+    <Compile Include="DiveLog\VideoEntry.cs" />
+    <Compile Include="Communicators\SubCTCPClient.cs" />
+    <Compile Include="Communicators\SubCTCPServer.cs" />
+    <Compile Include="Converters\FractionToNanoSeconds.cs" />
+    <Compile Include="Converters\StringToTimeSpan.cs" />
+    <Compile Include="Droid\CameraInfo.cs" />
+    <Compile Include="Droid\DataLogger.cs" />
+    <Compile Include="Droid\DebugLogger.cs" />
+    <Compile Include="Droid\DiskSpaceMonitor.cs" />
+    <Compile Include="DiveLog\DiveDirectory.cs" />
+    <Compile Include="DiveLog\DiveEntry.cs" />
+    <Compile Include="Droid\DroidBase.cs" />
+    <Compile Include="DiveLog\Entry.cs" />
+    <Compile Include="Droid\Enums\CameraTemplate.cs" />
+    <Compile Include="Droid\Enums\SurfaceTypes.cs" />
+    <Compile Include="Converters\JsonConverters\EthernetAddressConverter.cs" />
+    <Compile Include="DiveLog\EventEditor.cs" />
+    <Compile Include="Droid\Helpers\DiskSpaceManager.cs" />
+    <Compile Include="Droid\Helpers\Ethernet.cs" />
+    <Compile Include="Droid\Helpers\TemperatureLogger.cs" />
+    <Compile Include="Settings\Interfaces\ICRUD.cs" />
+    <Compile Include="DiveLog\IEventLogger.cs" />
+    <Compile Include="Droid\Interfaces\ICaptureRequest.cs" />
+    <Compile Include="Droid\Interfaces\ICaptureRequestKey.cs" />
+    <Compile Include="Droid\Interfaces\ICaptureResultKey.cs" />
+    <Compile Include="Droid\Interfaces\IDiskSpaceMonitor.cs" />
+    <Compile Include="Droid\Interfaces\IHandler.cs" />
+    <Compile Include="Droid\Interfaces\IHandlerThread.cs" />
+    <Compile Include="Droid\Interfaces\IInterpreter.cs" />
+    <Compile Include="Droid\Interfaces\ILooper.cs" />
+    <Compile Include="Droid\Interfaces\IPowerListener.cs" />
+    <Compile Include="Droid\Interfaces\IShell.cs" />
+    <Compile Include="Droid\Interfaces\ISurface.cs" />
+    <Compile Include="DiveLog\IPictureTaker.cs" />
+    <Compile Include="DiveLog\IRecorder.cs" />
+    <Compile Include="Droid\PowerController.cs" />
+    <Compile Include="DiveLog\Project.cs" />
+    <Compile Include="Droid\RecordingTimer.cs" />
+    <Compile Include="Droid\ScriptBuilder.cs" />
+    <Compile Include="Enums\CameraType.cs" />
+    <Compile Include="Enums\ComparisonOperators.cs" />
+    <Compile Include="Enums\ConnectionStatus.cs" />
+    <Compile Include="Enums\DeploymentEnvironments.cs" />
+    <Compile Include="Enums\EventTypes.cs" />
+    <Compile Include="Enums\LensType.cs" />
+    <Compile Include="Enums\MediaRecorderState.cs" />
+    <Compile Include="Enums\RayfinClockMode.cs" />
+    <Compile Include="Enums\RayfinExternalStorageType.cs" />
+    <Compile Include="Enums\RecordingStates.cs" />
+    <Compile Include="Enums\StreamTypes.cs" />
+    <Compile Include="Enums\StrobeStates.cs" />
+    <Compile Include="Enums\VideoConverter.cs" />
+    <Compile Include="Enums\VideoFormat.cs" />
+    <Compile Include="Exceptions\DriveDoesNotExistException.cs" />
+    <Compile Include="Exceptions\MinimumPercentageNegativeException.cs" />
+    <Compile Include="Extensions\DataTableExtensions.cs" />
+    <Compile Include="Extensions\DirectoryInfoExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\FractionExtensions.cs" />
+    <Compile Include="Extensions\IPAddressExtensions.cs" />
+    <Compile Include="Extensions\SocketExtensions.cs" />
+    <Compile Include="Extensions\Task.cs" />
+    <Compile Include="Extensions\TupleExtensions.cs" />
+    <Compile Include="Extensions\WebClientExtensions.cs" />
+    <Compile Include="Fraction.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\ActionScheduler.cs" />
+    <Compile Include="Helpers\AquisitionID.cs" />
+    <Compile Include="Helpers\AquisitionIDComparer.cs" />
+    <Compile Include="Helpers\AquisitionNameComparer.cs" />
+    <Compile Include="Helpers\CameraInfoComparer.cs" />
+    <Compile Include="Helpers\DebugOutput.cs" />
+    <Compile Include="Helpers\Deploy.cs" />
+    <Compile Include="Helpers\DeviceFinder.cs" />
+    <Compile Include="Helpers\FTP.cs" />
+    <Compile Include="Helpers\Interval.cs" />
+    <Compile Include="Helpers\MoreEnumerable.DistinctBy.cs" />
+    <Compile Include="Helpers\NullHelper.cs" />
+    <Compile Include="Helpers\Paths.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Helpers\ShutterSpeed.cs" />
+    <Compile Include="Helpers\SystemCommandHelper.cs" />
+    <Compile Include="Helpers\TaskHelper.cs" />
+    <Compile Include="Helpers\TestHelpers\EventTester.cs" />
+    <Compile Include="Helpers\TestHelpers\PropertyTester.cs" />
+    <Compile Include="Helpers\TimeoutDictionary.cs" />
+    <Compile Include="Helpers\Timers.cs" />
+    <Compile Include="Helpers\Zip.cs" />
+    <Compile Include="Interfaces\IDataRouter.cs" />
+    <Compile Include="Interfaces\IFilePicker.cs" />
+    <Compile Include="Interfaces\IFileWriter.cs" />
+    <Compile Include="Interfaces\ILogData.cs" />
+    <Compile Include="Interfaces\IResettable.cs" />
+    <Compile Include="Interfaces\IZeroConfDetector.cs" />
+    <Compile Include="Interfaces\LoggableContainer.cs" />
+    <Compile Include="Interfaces\IInterpretationEngine.cs" />
+    <Compile Include="Interfaces\IParser.cs" />
+    <Compile Include="Communicators\DataTypes\CommunicationData.cs" />
+    <Compile Include="Communicators\SubCSerial.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Communicators\TCPFileReceiver.cs" />
+    <Compile Include="Communicators\TCPFileSender.cs" />
+    <Compile Include="DataAppender.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Communicators\Interfaces\ICommunicator.cs" />
+    <Compile Include="Communicators\SubCUDP.cs" />
+    <Compile Include="Communicators\SubCUdpSender.cs" />
+    <Compile Include="DiveLog\Dive.cs" />
+    <Compile Include="DiveLog\Interfaces\IDiveLoggable.cs" />
+    <Compile Include="DiveLog\VideoClip.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\Dictionary.cs" />
+    <Compile Include="Extensions\DriveExtensions.cs" />
+    <Compile Include="Extensions\FileExtensions.cs" />
+    <Compile Include="Extensions\Numbers.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\RegexExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\StructExtensions.cs" />
+    <Compile Include="Helpers\ArrayHelper.cs" />
+    <Compile Include="Helpers\Drives.cs" />
+    <Compile Include="Helpers\Email.cs" />
+    <Compile Include="Helpers\Enumerable.cs" />
+    <Compile Include="Helpers\Ethernet.cs" />
+    <Compile Include="Helpers\IExecuteWithObject.cs" />
+    <Compile Include="Helpers\IExecuteWithObjectAndResult.cs" />
+    <Compile Include="Extensions\PropertyExtensions.cs" />
+    <Compile Include="Helpers\DoubleUtilities.cs" />
+    <Compile Include="Helpers\IPInfo.cs" />
+    <Compile Include="Helpers\ObservableCollection.cs" />
+    <Compile Include="Helpers\ObservableContentCollection.cs" />
+    <Compile Include="Helpers\ObservableDictionary.cs" />
+    <Compile Include="Helpers\ObservableSortedDictionary.cs" />
+    <Compile Include="Helpers\PropertySetter.cs" />
+    <Compile Include="Helpers\ReactiveAttribute.cs" />
+    <Compile Include="Helpers\SubCIO.cs" />
+    <Compile Include="Helpers\Memory.cs" />
+    <Compile Include="Helpers\Numbers.cs" />
+    <Compile Include="Helpers\Strings.cs" />
+    <Compile Include="Helpers\FilesFolders.cs" />
+    <Compile Include="Helpers\SubCMessageBoxButtons.cs" />
+    <Compile Include="Helpers\UIServices.cs" />
+    <Compile Include="Helpers\WeakAction.cs" />
+    <Compile Include="Helpers\WeakActionGeneric.cs" />
+    <Compile Include="Helpers\WeakFunc.cs" />
+    <Compile Include="Helpers\WeakFuncGeneric.cs" />
+    <Compile Include="Interfaces\IConvert.cs" />
+    <Compile Include="Interfaces\ICreator.cs" />
+    <Compile Include="Interfaces\IDispatcher.cs" />
+    <Compile Include="Interfaces\ILoader.cs" />
+    <Compile Include="Interfaces\ILogable.cs" />
+    <Compile Include="Interfaces\IMatcher.cs" />
+    <Compile Include="Interfaces\IRange.cs" />
+    <Compile Include="Interfaces\IRecordingTimer.cs" />
+    <Compile Include="Interfaces\ISerialMatcher.cs" />
+    <Compile Include="Interfaces\IStartable.cs" />
+    <Compile Include="Matcher.cs" />
+    <Compile Include="MatchTypes.cs" />
+    <Compile Include="Messaging\Interfaces\IHelpProvider.cs" />
+    <Compile Include="Messaging\Interfaces\IMessageRouter.cs" />
+    <Compile Include="Messaging\Interfaces\IMessageService.cs" />
+    <Compile Include="Messaging\Interfaces\INotifiable.cs" />
+    <Compile Include="Messaging\Interfaces\INotifier.cs" />
+    <Compile Include="Messaging\Models\MessageEventArgs.cs" />
+    <Compile Include="Messaging\Models\MessageIOC.cs" />
+    <Compile Include="Messaging\Models\MessageRouter.cs" />
+    <Compile Include="Messaging\Models\MessageTypes.cs" />
+    <Compile Include="Messaging\Models\NotifyEventArgs.cs" />
+    <Compile Include="Models\AddressCompare.cs" />
+    <Compile Include="Models\CommunicatorAddress.cs" />
+    <Compile Include="Models\EthernetAddress.cs" />
+    <Compile Include="Models\FileAddress.cs" />
+    <Compile Include="Models\InterpretationResult.cs" />
+    <Compile Include="Models\KongsbergPanTilt.cs" />
+    <Compile Include="Models\NmeaDefinition.cs" />
+    <Compile Include="Models\NmeaField.cs" />
+    <Compile Include="Models\SerialAddress.cs" />
+    <Compile Include="Networking\RayfinScanner.cs" />
+    <Compile Include="ObservableDictionary.cs" />
+    <Compile Include="Parsers\SubCDataFileParser.cs" />
+    <Compile Include="PrecisionStopwatch.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="PrecisionTimer.cs" />
+    <Compile Include="RecordedFile.cs" />
+    <Compile Include="Security\Encryption.cs" />
+    <Compile Include="SerialAppender.cs" />
+    <Compile Include="Settings\FeatureToggler.cs" />
+    <Compile Include="Settings\Interfaces\ILoader.cs" />
+    <Compile Include="Settings\Interfaces\ILoadable.cs" />
+    <Compile Include="Settings\JSONLiteDatabaseCRUD.cs" />
+    <Compile Include="Settings\JSONRecord.cs" />
+    <Compile Include="Settings\JSONSqliteCRUD.cs" />
+    <Compile Include="Settings\Saveable.cs" />
+    <Compile Include="Interfaces\IError.cs" />
+    <Compile Include="Interfaces\ILogger.cs" />
+    <Compile Include="Settings\Interfaces\ISettingsService.cs" />
+    <Compile Include="Settings\ShortcutLoader.cs" />
+    <Compile Include="Settings\SubCLiteDB.cs" />
+    <Compile Include="Settings\SubCXDoc.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\SubCPropertySettings.cs" />
+    <Compile Include="StreamCheck.cs" />
+    <Compile Include="SubCLogger.cs" />
+    <Compile Include="TimerStates.cs" />
+    <Compile Include="Xinfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <AdditionalFiles Include="stylecop.json" />
+    <None Include="SubCTools.ruleset" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Droid\EventArguments\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle">
+      <Version>1.8.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="F23.StringSimilarity">
+      <Version>3.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="Gapotchenko.Eazfuscator.NET">
+      <Version>2020.4.430</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Google.Protobuf">
+      <Version>3.6.1</Version>
+    </PackageReference>
+    <PackageReference Include="iTextSharp">
+      <Version>5.5.13</Version>
+    </PackageReference>
+    <PackageReference Include="LiteDB">
+      <Version>4.1.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.Platforms">
+      <Version>1.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="MySql.Data">
+      <Version>8.0.18</Version>
+    </PackageReference>
+    <PackageReference Include="NETStandard.Library">
+      <Version>1.6.1</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="SSH.NET">
+      <Version>2016.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Buffers">
+      <Version>4.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Collections">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Collections.Concurrent">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.Debug">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.Tools">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.Tracing">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Globalization">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.IO">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.IO.Compression">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Linq">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Linq.Expressions">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Memory">
+      <Version>4.5.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Primitives">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Numerics.Vectors">
+      <Version>4.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.ObjectModel">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Reflection">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Reflection.Extensions">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Reflection.Primitives">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Resources.ResourceManager">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
+      <Version>4.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Extensions">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.InteropServices">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Numerics">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Text.Encoding">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Text.Encoding.Extensions">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Text.RegularExpressions">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Threading">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Threading.Tasks">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Xml.ReaderWriter">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Xml.XDocument">
+      <Version>4.3.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
