@@ -14,7 +14,7 @@ namespace Camera2PTZ
 
         public override void OnConfigured(CameraCaptureSession session)
         {
-            fragment.previewSession = session;
+            //fragment.previewSession = session;
             //fragment.updatePreview ();
         }
 

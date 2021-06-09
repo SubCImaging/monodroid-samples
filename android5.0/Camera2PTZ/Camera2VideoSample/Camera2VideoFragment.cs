@@ -27,19 +27,20 @@ namespace Camera2PTZ
         public CameraDevice cameraDevice;
         public Semaphore cameraOpenCloseLock = new Semaphore(1);
 
-        public CameraCaptureSession previewSession;
+        //public CameraCaptureSession previewSession;
 
         // AutoFitTextureView for camera preview
         public AutoFitTextureView textureView;
 
-        private const string TAG = "Camera2VideoFragment";
+        //private const string TAG = "Camera2VideoFragment";
         private Handler backgroundHandler;
+
         private HandlerThread backgroundThread;
 
         private SubCCaptureSession captureSession;
         private Button down;
         private Button left;
-        private SparseIntArray ORIENTATIONS = new SparseIntArray();
+        //private SparseIntArray ORIENTATIONS = new SparseIntArray();
         //private CaptureRequest.Builder previewBuilder;
 
         private SubCDigitalPTZ ptz;
@@ -59,10 +60,10 @@ namespace Camera2PTZ
 
         public Camera2VideoFragment()
         {
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation0, 90);
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation90, 0);
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation180, 270);
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation270, 180);
+            //ORIENTATIONS.Append((int)SurfaceOrientation.Rotation0, 90);
+            //ORIENTATIONS.Append((int)SurfaceOrientation.Rotation90, 0);
+            //ORIENTATIONS.Append((int)SurfaceOrientation.Rotation180, 270);
+            //ORIENTATIONS.Append((int)SurfaceOrientation.Rotation270, 180);
             surfaceTextureListener = new SurfaceTextureListener();
             surfaceTextureListener.SurfaceTextureAvailable += (s, e) => openCamera();
             surfaceTextureListener.SurfaceTextureChanged += (s, e) => configureTransform(e.Width, e.Height);
@@ -210,7 +211,7 @@ namespace Camera2PTZ
                 surfaces.Add(previewSurface);
                 //previewBuilder.AddTarget(previewSurface);
 
-                cameraDevice.CreateCaptureSession(surfaces, new PreviewCaptureStateCallback(this), backgroundHandler);
+                //cameraDevice.CreateCaptureSession(surfaces, new PreviewCaptureStateCallback(this), backgroundHandler);
 
                 var sessionCallbackThread = new SubCHandlerThread(new HandlerThread("SessionCallbackThread"));
                 sessionCallbackThread.Start();
@@ -287,11 +288,6 @@ namespace Camera2PTZ
             //captureSession.Repeat();
         }
 
-        private void setUpCaptureRequestBuilder(CaptureRequest.Builder builder)
-        {
-            builder.Set(CaptureRequest.ControlMode, new Java.Lang.Integer((int)ControlMode.Auto));
-        }
-
         private void StartBackgroundThread()
         {
             backgroundThread = new HandlerThread("CameraBackground");
@@ -312,7 +308,9 @@ namespace Camera2PTZ
             e.Camera.Close();
             cameraDevice = null;
             if (null != Activity)
+            {
                 Activity.Finish();
+            }
         }
 
         private void StateListener_Opened(object sender, CameraDevice e)
@@ -320,10 +318,10 @@ namespace Camera2PTZ
             cameraDevice = e;
             startPreview();
             cameraOpenCloseLock.Release();
-            if (null != textureView)
-            {
-                configureTransform(textureView.Width, textureView.Height);
-            }
+            //if (null != textureView)
+            //{
+            //    configureTransform(textureView.Width, textureView.Height);
+            //}
         }
 
         private void StopBackgroundThread()
