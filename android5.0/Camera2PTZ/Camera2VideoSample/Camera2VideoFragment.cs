@@ -11,8 +11,10 @@ using Java.IO;
 using Java.Lang;
 using Java.Util.Concurrent;
 using SubCTools.Droid;
+using SubCTools.Droid.Callbacks;
 using SubCTools.Droid.Camera;
 using SubCTools.Droid.Enums;
+using SubCTools.Droid.Listeners;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,10 +48,10 @@ namespace Camera2PTZ
         private Size sensorSize;
 
         // Called when the CameraDevice changes state
-        private MyCameraStateCallback stateListener;
+        private CameraStateCallback stateListener;
 
         // Handles several lifecycle events of a TextureView
-        private MySurfaceTextureListener surfaceTextureListener;
+        private SurfaceTextureListener surfaceTextureListener;
 
         private Button up;
         private Button zoomin;
@@ -61,8 +63,14 @@ namespace Camera2PTZ
             ORIENTATIONS.Append((int)SurfaceOrientation.Rotation90, 0);
             ORIENTATIONS.Append((int)SurfaceOrientation.Rotation180, 270);
             ORIENTATIONS.Append((int)SurfaceOrientation.Rotation270, 180);
-            surfaceTextureListener = new MySurfaceTextureListener(this);
-            stateListener = new MyCameraStateCallback(this);
+            surfaceTextureListener = new SurfaceTextureListener();
+            surfaceTextureListener.SurfaceTextureAvailable += (s, e) => openCamera();
+            surfaceTextureListener.SurfaceTextureChanged += (s, e) => configureTransform(e.Width, e.Height);
+
+            stateListener = new CameraStateCallback();
+            stateListener.Opened += StateListener_Opened;
+            stateListener.Disconnected += StateListener_Disconnected;
+            stateListener.Error += StateListener_Error;
         }
 
         public static Camera2VideoFragment newInstance()
@@ -75,26 +83,26 @@ namespace Camera2PTZ
         //Configures the neccesary matrix transformation to apply to the textureView
         public void configureTransform(int viewWidth, int viewHeight)
         {
-            if (null == Activity || null == sensorSize || null == textureView)
-                return;
+            //if (null == Activity || null == sensorSize || null == textureView)
+            //    return;
 
-            int rotation = (int)Activity.WindowManager.DefaultDisplay.Rotation;
-            var matrix = new Matrix();
-            var viewRect = new RectF(0, 0, viewWidth, viewHeight);
-            var bufferRect = new RectF(0, 0, sensorSize.Height, sensorSize.Width);
-            float centerX = viewRect.CenterX();
-            float centerY = viewRect.CenterY();
-            if ((int)SurfaceOrientation.Rotation90 == rotation || (int)SurfaceOrientation.Rotation270 == rotation)
-            {
-                bufferRect.Offset((centerX - bufferRect.CenterX()), (centerY - bufferRect.CenterY()));
-                matrix.SetRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.Fill);
-                float scale = System.Math.Max(
-                    (float)viewHeight / sensorSize.Height,
-                    (float)viewHeight / sensorSize.Width);
-                matrix.PostScale(scale, scale, centerX, centerY);
-                matrix.PostRotate(90 * (rotation - 2), centerX, centerY);
-            }
-            textureView.SetTransform(matrix);
+            //int rotation = (int)Activity.WindowManager.DefaultDisplay.Rotation;
+            //var matrix = new Matrix();
+            //var viewRect = new RectF(0, 0, viewWidth, viewHeight);
+            //var bufferRect = new RectF(0, 0, sensorSize.Height, sensorSize.Width);
+            //float centerX = viewRect.CenterX();
+            //float centerY = viewRect.CenterY();
+            //if ((int)SurfaceOrientation.Rotation90 == rotation || (int)SurfaceOrientation.Rotation270 == rotation)
+            //{
+            //    bufferRect.Offset((centerX - bufferRect.CenterX()), (centerY - bufferRect.CenterY()));
+            //    matrix.SetRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.Fill);
+            //    float scale = System.Math.Max(
+            //        (float)viewHeight / sensorSize.Height,
+            //        (float)viewHeight / sensorSize.Width);
+            //    matrix.PostScale(scale, scale, centerX, centerY);
+            //    matrix.PostRotate(90 * (rotation - 2), centerX, centerY);
+            //}
+            //textureView.SetTransform(matrix);
         }
 
         public void OnClick(View view)
@@ -119,7 +127,7 @@ namespace Camera2PTZ
             base.OnResume();
             StartBackgroundThread();
             if (textureView.IsAvailable)
-                openCamera(textureView.Width, textureView.Height);
+                openCamera();
             else
                 textureView.SurfaceTextureListener = surfaceTextureListener;
         }
@@ -143,7 +151,7 @@ namespace Camera2PTZ
         }
 
         //Tries to open a CameraDevice
-        public void openCamera(int width, int height)
+        public void openCamera()
         {
             if (null == Activity || Activity.IsFinishing)
                 return;
@@ -178,8 +186,7 @@ namespace Camera2PTZ
             }
             catch (NullPointerException)
             {
-                var dialog = new ErrorDialog();
-                dialog.Show(FragmentManager, "dialog");
+                // var dialog = new ErrorDialog(); dialog.Show(FragmentManager, "dialog");
             }
             catch (InterruptedException)
             {
@@ -224,25 +231,6 @@ namespace Camera2PTZ
             }
         }
 
-        //Update the preview
-        //public void updatePreview()
-        //{
-        //    if (null == cameraDevice)
-        //        return;
-
-        //    try
-        //    {
-        //        setUpCaptureRequestBuilder(previewBuilder);
-        //        HandlerThread thread = new HandlerThread("CameraPreview");
-        //        thread.Start();
-        //        previewSession.SetRepeatingRequest(previewBuilder.Build(), null, backgroundHandler);
-        //    }
-        //    catch (CameraAccessException e)
-        //    {
-        //        e.PrintStackTrace();
-        //    }
-        //}
-
         private void CloseCamera()
         {
             try
@@ -264,12 +252,29 @@ namespace Camera2PTZ
             }
         }
 
+        //    try
+        //    {
+        //        setUpCaptureRequestBuilder(previewBuilder);
+        //        HandlerThread thread = new HandlerThread("CameraPreview");
+        //        thread.Start();
+        //        previewSession.SetRepeatingRequest(previewBuilder.Build(), null, backgroundHandler);
+        //    }
+        //    catch (CameraAccessException e)
+        //    {
+        //        e.PrintStackTrace();
+        //    }
+        //}
         private void Down_Click(object sender, EventArgs e)
         {
             ptz.TiltDown();
             //captureSession.Repeat();
         }
 
+        //Update the preview
+        //public void updatePreview()
+        //{
+        //    if (null == cameraDevice)
+        //        return;
         private void Left_Click(object sender, EventArgs e)
         {
             ptz.PanLeft();
@@ -292,6 +297,33 @@ namespace Camera2PTZ
             backgroundThread = new HandlerThread("CameraBackground");
             backgroundThread.Start();
             backgroundHandler = new Handler(backgroundThread.Looper);
+        }
+
+        private void StateListener_Disconnected(object sender, CameraDevice e)
+        {
+            cameraOpenCloseLock.Release();
+            e.Close();
+            cameraDevice = null;
+        }
+
+        private void StateListener_Error(object sender, SubCTools.Droid.EventArguments.CameraErrorArgs e)
+        {
+            cameraOpenCloseLock.Release();
+            e.Camera.Close();
+            cameraDevice = null;
+            if (null != Activity)
+                Activity.Finish();
+        }
+
+        private void StateListener_Opened(object sender, CameraDevice e)
+        {
+            cameraDevice = e;
+            startPreview();
+            cameraOpenCloseLock.Release();
+            if (null != textureView)
+            {
+                configureTransform(textureView.Width, textureView.Height);
+            }
         }
 
         private void StopBackgroundThread()
@@ -325,50 +357,6 @@ namespace Camera2PTZ
         {
             ptz.ZoomOut();
             //captureSession.Repeat();
-        }
-
-        public class ErrorDialog : DialogFragment
-        {
-            public override Dialog OnCreateDialog(Bundle savedInstanceState)
-            {
-                var alert = new AlertDialog.Builder(Activity);
-                alert.SetMessage("This device doesn't support Camera2 API.");
-                alert.SetPositiveButton(Android.Resource.String.Ok, new MyDialogOnClickListener(this));
-                return alert.Show();
-            }
-        }
-
-        // Compare two Sizes based on their areas
-        private class CompareSizesByArea : Java.Lang.Object, Java.Util.IComparator
-        {
-            public int Compare(Java.Lang.Object lhs, Java.Lang.Object rhs)
-            {
-                // We cast here to ensure the multiplications won't overflow
-                if (lhs is Size && rhs is Size)
-                {
-                    var right = (Size)rhs;
-                    var left = (Size)lhs;
-                    return Long.Signum((long)left.Width * left.Height -
-                        (long)right.Width * right.Height);
-                }
-                else
-                    return 0;
-            }
-        }
-
-        private class MyDialogOnClickListener : Java.Lang.Object, IDialogInterfaceOnClickListener
-        {
-            private ErrorDialog er;
-
-            public MyDialogOnClickListener(ErrorDialog e)
-            {
-                er = e;
-            }
-
-            public void OnClick(IDialogInterface dialogInterface, int i)
-            {
-                er.Activity.Finish();
-            }
         }
     }
 }
