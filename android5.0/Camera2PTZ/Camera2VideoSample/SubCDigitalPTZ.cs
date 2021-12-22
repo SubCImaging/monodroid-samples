@@ -24,81 +24,81 @@ namespace SubCTools.Droid.Camera
     public class SubCDigitalPTZ : DroidBase
     {
         /// <summary>
-        /// Maximum zoom level
+        /// Maximum zoom level.
         /// </summary>
         public const double MaxZoom = 10.0;
 
         /// <summary>
-        /// Min zoom, 1x
+        /// Min zoom, 1x.
         /// </summary>
         public const double MinZoom = 1.0;
 
         /// <summary>
-        /// The maximum rate that the camera will pan and tilt
+        /// The maximum rate that the camera will pan and tilt.
         /// </summary>
         private const double MaxMoveRate = 0.02d;
 
         /// <summary>
-        /// The maximum rate that the camera will zoom
+        /// The maximum rate that the camera will zoom.
         /// </summary>
         private const double MaxZoomRate = 0.014d;
 
         /// <summary>
-        /// An object to lock so that the smooth motion tasks only runs one at a time
+        /// An object to lock so that the smooth motion tasks only runs one at a time.
         /// </summary>
         private static readonly object MotionLock = new object();
 
         /// <summary>
-        /// An object to lock so that zoom method spam will not lock up the system
+        /// An object to lock so that zoom method spam will not lock up the system.
         /// </summary>
         private static readonly object ZoomLock = new object();
 
         /// <summary>
-        /// The timer that calls for zoom actions as the PTZ rectangle is in motion
+        /// The timer that calls for zoom actions as the PTZ rectangle is in motion.
         /// </summary>
         private readonly System.Timers.Timer motionTimer;
 
         /// <summary>
-        /// Number of frames used for transition (Default 30fps)
+        /// Number of frames used for transition (Default 30fps).
         /// </summary>
         private readonly uint transitionFrames = 1_500 / 30;
 
         /// <summary>
         /// The amount of time to spend on the transition in milliseconds. (Aproximate, actual time
-        /// will vary)
+        /// will vary).
         /// </summary>
         private readonly uint transitionTime = 1_500;
 
         /// <summary>
-        /// The direction and rate at which the view rectangle is moving. All values from 0 to 100
+        /// The direction and rate at which the view rectangle is moving. All values from 0 to 100.
         /// </summary>
         private Vector3 motionVector;
 
         /// <summary>
-        /// A rect representing the camera preview surface
+        /// A rect representing the camera preview surface.
         /// </summary>
         private Rect previewRect;
 
         /// <summary>
-        /// The resolution of the camera preview surface
+        /// The resolution of the camera preview surface.
         /// </summary>
         private Size previewRes;
 
         /// <summary>
-        /// The camera capture builder
+        /// The camera capture builder.
         /// </summary>
         private SubCCaptureSession session;
 
         /// <summary>
-        /// The digital zoom level
+        /// The digital zoom level.
         /// </summary>
         private double zoomLevel = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DigitalPTZ" /> class.
         /// </summary>
-        /// <param name="capSession">the capture session</param>
-        /// <param name="previewResolution">the resolution of the preview surface</param>
+        /// <param name="session">the capture session.</param>
+        /// <param name="previewResolution">the resolution of the preview surface.</param>
         public SubCDigitalPTZ(SubCCaptureSession session, Size previewResolution)
         {
             this.session = session;
@@ -112,12 +112,12 @@ namespace SubCTools.Droid.Camera
 
         /// <summary>
         /// An event that notifies StockLens when the zoom level has changed so that it can notifty
-        /// topside control software
+        /// topside control software.
         /// </summary>
         public event EventHandler<double> ZoomLevelChanged;
 
         /// <summary>
-        /// Types of motion that the camera can perform
+        /// Types of motion that the camera can perform.
         /// </summary>
         public enum MotionTypes
         {
@@ -130,7 +130,7 @@ namespace SubCTools.Droid.Camera
             /// Once a command to start motion is sent the camera will continuously move at a
             /// constant speed until instructed to stop or a boundary is reached.
             /// </summary>
-            Continuous
+            Continuous,
         }
 
         /// <summary>
@@ -141,28 +141,28 @@ namespace SubCTools.Droid.Camera
         public MotionTypes MotionType { get; private set; }
 
         /// <summary>
-        /// Gets or sets the step move distance as a fraction of the frame size (for step operations)
+        /// Gets or sets the step move distance as a fraction of the frame size (for step operations).
         /// </summary>
         public float MoveStep { get; set; } = 0.25f;
 
         /// <summary>
-        /// Gets the speed at which the view rectangle pans
+        /// Gets the speed at which the view rectangle pans.
         /// </summary>
         public int PanSpeed { get; private set; } = 75;
 
         /// <summary>
-        /// Gets the speed at which the view rectangle tilts
+        /// Gets the speed at which the view rectangle tilts.
         /// </summary>
         public int TiltSpeed { get; private set; } = 75;
 
         /// <summary>
         /// Gets a rectangle representing the section of the preview surface that is currently being
-        /// displayed on the screen
+        /// displayed on the screen.
         /// </summary>
         public Rect ViewRect { get; private set; }
 
         /// <summary>
-        /// Gets the digital zoom level
+        /// Gets the digital zoom level.
         /// </summary>
         public double ZoomLevel
         {
@@ -183,7 +183,7 @@ namespace SubCTools.Droid.Camera
         public float ZoomStep { get; set; } = 1f; // 2f; it was 2 when this was a multiplier
 
         /// <summary>
-        /// Jump-Zoom In
+        /// Jump-Zoom In.
         /// </summary>
         public void JumpZoomIn()
         {
@@ -196,7 +196,7 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Jump-Zoom Out
+        /// Jump-Zoom Out.
         /// </summary>
         public void JumpZoomOut()
         {
@@ -212,9 +212,9 @@ namespace SubCTools.Droid.Camera
         /// A single command that sets all of the PTZ motiona parameters and begins motion. This
         /// method does nothing if StepMotion is enabled.
         /// </summary>
-        /// <param name="panVelocity">the velocity at which to pan. Between -100 and 100</param>
-        /// <param name="tiltVelocity">the velocity at which to tilt. Between -100 and 100</param>
-        /// <param name="zoomVelocity">the velocity at which to zoom. Between -100 and 100</param>
+        /// <param name="panVelocity">the velocity at which to pan. Between -100 and 100.</param>
+        /// <param name="tiltVelocity">the velocity at which to tilt. Between -100 and 100.</param>
+        /// <param name="zoomVelocity">the velocity at which to zoom. Between -100 and 100.</param>
         public void MovePTZ(int panVelocity, int tiltVelocity, int zoomVelocity)
         {
             if (MotionType != MotionTypes.Step)
@@ -240,7 +240,7 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Activates a pan left action
+        /// Activates a pan left action.
         /// </summary>
         public void PanLeft()
         {
@@ -256,9 +256,9 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Activates a pan left action and specifies the speed
+        /// Activates a pan left action and specifies the speed.
         /// </summary>
-        /// <param name="speed">The speed as a percentage integer</param>
+        /// <param name="speed">The speed as a percentage integer.</param>
         public void PanLeft(int speed)
         {
             PanSpeed = speed.Clamp();
@@ -266,7 +266,7 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Activates a pan right action
+        /// Activates a pan right action.
         /// </summary>
         public void PanRight()
         {
@@ -282,9 +282,9 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Activates a pan right action and specifies the speed
+        /// Activates a pan right action and specifies the speed.
         /// </summary>
-        /// <param name="speed">The speed as a percentage integer</param>
+        /// <param name="speed">The speed as a percentage integer.</param>
         public void PanRight(int speed)
         {
             PanSpeed = speed.Clamp();
@@ -312,7 +312,7 @@ namespace SubCTools.Droid.Camera
         public void StepMoveUp() => JumpTranslation(new System.Drawing.Point(0, -((int)((float)ViewRect.Height() * MoveStep))));
 
         /// <summary>
-        /// Step-Zoom In
+        /// Step-Zoom In.
         /// </summary>
         public void StepZoomIn()
         {
@@ -332,7 +332,7 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Step-Zoom Out
+        /// Step-Zoom Out.
         /// </summary>
         public void StepZoomOut()
         {
@@ -352,7 +352,7 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Stops all continuous PTZ actions
+        /// Stops all continuous PTZ actions.
         /// </summary>
         public void StopPTZ()
         {
@@ -361,7 +361,7 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Stops all Zoom actions
+        /// Stops all Zoom actions.
         /// </summary>
         public void StopZoom()
         {
@@ -369,7 +369,7 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Activates a tilt down action
+        /// Activates a tilt down action.
         /// </summary>
         public void TiltDown()
         {
@@ -385,9 +385,9 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Activates a tilt down action and specifies the speed
+        /// Activates a tilt down action and specifies the speed.
         /// </summary>
-        /// <param name="speed">The speed as a percentage integer</param>
+        /// <param name="speed">The speed as a percentage integer.</param>
         public void TiltDown(int speed)
         {
             TiltSpeed = speed.Clamp();
@@ -395,7 +395,7 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Activates a tilt up action
+        /// Activates a tilt up action.
         /// </summary>
         public void TiltUp()
         {
@@ -411,9 +411,9 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Activates a tilt up action and specifies the speed
+        /// Activates a tilt up action and specifies the speed.
         /// </summary>
-        /// <param name="speed">The speed as a percentage integer</param>
+        /// <param name="speed">The speed as a percentage integer.</param>
         public void TiltUp(int speed)
         {
             TiltSpeed = speed.Clamp();
@@ -421,9 +421,9 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Updates the pan speed
+        /// Updates the pan speed.
         /// </summary>
-        /// <param name="speed">the speed</param>
+        /// <param name="speed">the speed.</param>
         public void UpdatePanSpeed(int speed)
         {
             PanSpeed = speed;
@@ -431,9 +431,9 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Updates the preview resolution
+        /// Updates the preview resolution.
         /// </summary>
-        /// <param name="prevRes">the resolution of the preview surface</param>
+        /// <param name="prevRes">the resolution of the preview surface.</param>
         public void UpdatePreviewResolution(Size prevRes)
         {
             previewRes = new Size(prevRes.Width - 1, prevRes.Height - 1);
@@ -441,9 +441,9 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Updates the value of StepMotion
+        /// Updates the value of StepMotion.
         /// </summary>
-        /// <param name="newType">a boolean value</param>
+        /// <param name="newType">a boolean value.</param>
         public void UpdateStepMotion(MotionTypes newType)
         {
             if (MotionType == MotionTypes.Step)
@@ -455,9 +455,9 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Updates the tilt speed
+        /// Updates the tilt speed.
         /// </summary>
-        /// <param name="speed">the speed</param>
+        /// <param name="speed">the speed.</param>
         public void UpdateTiltSpeed(int speed)
         {
             TiltSpeed = speed;
@@ -465,18 +465,16 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Zoom in/out to a specific level (centered on the same point as current)
+        /// Zoom in/out to a specific level (centered on the same point as current).
         /// </summary>
-        /// <param name="level">Level at which to digitally zoom, e.g. 2x, 3x... Min:1x, Max40x</param>
+        /// <param name="level">Level at which to digitally zoom, e.g. 2x, 3x... Min:1x, Max40x.</param>
         public void Zoom(double level)
         {
-            //if (ZoomLevel == level)
-            //{
-            //    return;
-            //}
-            // Bail if zoom is currently being completed.
+            // if (ZoomLevel == level) { return; } Bail if zoom is currently being completed.
             if (ZoomLock.IsLocked())
-            { return; }
+            {
+                return;
+            }
 
             if (level < MinZoom || level > MaxZoom)
             {
@@ -495,11 +493,11 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Zooms with an x and y offset from the current position and specifys a new zoom level
+        /// Zooms with an x and y offset from the current position and specifys a new zoom level.
         /// </summary>
-        /// <param name="dx">the change in x</param>
-        /// <param name="dy">the change in y</param>
-        /// <param name="level">the new zoom level</param>
+        /// <param name="dx">the change in x.</param>
+        /// <param name="dy">the change in y.</param>
+        /// <param name="level">the new zoom level.</param>
         public void Zoom(int dx, int dy, double level)
         {
             if (ZoomLock.IsLocked())
@@ -512,13 +510,13 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Zoom in to a specific rectangle
+        /// Zoom in to a specific rectangle.
         /// </summary>
-        /// <param name="left">Rectangle left edge</param>
-        /// <param name="top">Rectangle top edge</param>
-        /// <param name="right">Rectangle right edge</param>
-        /// <param name="bottom">Rectangle bottom edge</param>
-        /// <param name="recalcZoomLevel">if true the ZoomLevel will be recalculated</param>
+        /// <param name="left">Rectangle left edge.</param>
+        /// <param name="top">Rectangle top edge.</param>
+        /// <param name="right">Rectangle right edge.</param>
+        /// <param name="bottom">Rectangle bottom edge.</param>
+        /// <param name="recalcZoomLevel">if true the ZoomLevel will be recalculated.</param>
         public void Zoom(int left, int top, int right, int bottom, bool recalcZoomLevel = false)
         {
             if (ZoomLock.IsLocked())
@@ -544,10 +542,10 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Zoom to a specific rectangle
+        /// Zoom to a specific rectangle.
         /// </summary>
-        /// <param name="rect">the rectangle to zoom to</param>
-        /// <param name="recalcZoomLevel">if true the ZoomLevel will be recalculated</param>
+        /// <param name="rect">the rectangle to zoom to.</param>
+        /// <param name="recalcZoomLevel">if true the ZoomLevel will be recalculated.</param>
         public void Zoom(Rect rect, bool recalcZoomLevel)
         {
             if (ZoomLock.IsLocked())
@@ -563,9 +561,9 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// The main zoom method. Every zoom method leads to this one. Zooms to a specific rectangle
+        /// The main zoom method. Every zoom method leads to this one. Zooms to a specific rectangle.
         /// </summary>
-        /// <param name="rect">the rectangle to zoom to</param>
+        /// <param name="rect">the rectangle to zoom to.</param>
         public void Zoom(Rect rect)
         {
             if (ZoomLock.IsLocked())
@@ -581,16 +579,14 @@ namespace SubCTools.Droid.Camera
 
                 ViewRect = new Rect(rect);
                 Console.WriteLine($">>> Preview: {previewRect} - View: {ViewRect}");
-                //var fgndjks = previewRect;
-                //Console.WriteLine($">>>Preview:{previewRect} - View:{ViewRect}");
-                //builder.Set(CaptureRequest.ScalerCropRegion, ViewRect);
+
                 session.Update(new SubCCaptureRequestKey(CaptureRequest.ScalerCropRegion), ViewRect);
                 session.Repeat();
             }
         }
 
         /// <summary>
-        /// Activates a zoom in action
+        /// Activates a zoom in action.
         /// </summary>
         public void ZoomIn()
         {
@@ -606,7 +602,7 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Activates a zoom out action
+        /// Activates a zoom out action.
         /// </summary>
         public void ZoomOut()
         {
@@ -624,11 +620,11 @@ namespace SubCTools.Droid.Camera
         /// <summary>
         /// Calculates steps for zoom step array using ease out function.
         /// </summary>
-        /// <param name="startLocation">the starting value</param>
-        /// <param name="endLocation">the ending value</param>
-        /// <param name="numberOfSteps">number of steps to take</param>
-        /// <param name="ease">An easing function</param>
-        /// <returns>an array of step values</returns>
+        /// <param name="startLocation">the starting value.</param>
+        /// <param name="endLocation">the ending value.</param>
+        /// <param name="numberOfSteps">number of steps to take.</param>
+        /// <param name="ease">An easing function.</param>
+        /// <returns>an array of step values.</returns>
         private static float[] CalculateSteps(float startLocation, float endLocation, uint numberOfSteps, Func<int, uint, float> ease)
         {
             var distance = endLocation - startLocation;
@@ -648,11 +644,11 @@ namespace SubCTools.Droid.Camera
         /// <summary>
         /// Calculates steps for zoom step array using ease out function.
         /// </summary>
-        /// <param name="startLocation">the starting value</param>
-        /// <param name="endLocation">the ending value</param>
-        /// <param name="numberOfSteps">number of steps to take</param>
-        /// <param name="ease">An easing function</param>
-        /// <returns>an array of step values</returns>
+        /// <param name="startLocation">the starting value.</param>
+        /// <param name="endLocation">the ending value.</param>
+        /// <param name="numberOfSteps">number of steps to take.</param>
+        /// <param name="ease">An easing function.</param>
+        /// <returns>an array of step values.</returns>
         private static int[] CalculateSteps(int startLocation, int endLocation, uint numberOfSteps, Func<int, uint, float> ease)
         {
             return CalculateSteps(startLocation, endLocation, numberOfSteps, ease);
@@ -661,10 +657,10 @@ namespace SubCTools.Droid.Camera
         /// <summary>
         /// Calculates steps for zoom step array using sigmoid function.
         /// </summary>
-        /// <param name="startLocation">the starting value</param>
-        /// <param name="endLocation">the ending value</param>
-        /// <param name="numberOfSteps">number of steps to take</param>
-        /// <returns>an array of step values</returns>
+        /// <param name="startLocation">the starting value.</param>
+        /// <param name="endLocation">the ending value.</param>
+        /// <param name="numberOfSteps">number of steps to take.</param>
+        /// <returns>an array of step values.</returns>
         private static float[] CalculateSteps_Sigmoid(float startLocation, float endLocation, int numberOfSteps)
         {
             const float Slope = 20f;
@@ -698,11 +694,11 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Calculates a sinusoidal ease out function
+        /// Calculates a sinusoidal ease out function.
         /// </summary>
         /// <param name="x">The location to calculate the value for.</param>
-        /// <param name="steps">The total number of steps calculated</param>
-        /// <returns>a sigmoid</returns>
+        /// <param name="steps">The total number of steps calculated.</param>
+        /// <returns>a sigmoid.</returns>
         private static float EaseOut(int x, uint steps)
             => (float)Math.Sin(((double)x / steps) * Math.PI / 2d);
 
@@ -711,26 +707,26 @@ namespace SubCTools.Droid.Camera
         /// </summary>
         /// <param name="x">The location to calculate the value for.</param>
         /// <param name="slope">The slope of the logistic function.</param>
-        /// <param name="targetLocation">The maximum value of the function</param>
-        /// <param name="steps">The total number of steps calculated</param>
-        /// <returns>a sigmoid</returns>
+        /// <param name="targetLocation">The maximum value of the function.</param>
+        /// <param name="steps">The total number of steps calculated.</param>
+        /// <returns>a sigmoid.</returns>
         private static float Sigmoid(int x, float slope, float targetLocation, int steps)
             => targetLocation / (1 + (float)Math.Exp(-slope * (x - (steps / 2))));
 
         /// <summary>
-        /// Calculates the zoom level based on the supplied rectangle
+        /// Calculates the zoom level based on the supplied rectangle.
         /// </summary>
-        /// <param name="rect">the rectangle</param>
-        /// <returns>The zoom level</returns>
+        /// <param name="rect">the rectangle.</param>
+        /// <returns>The zoom level.</returns>
         private double CalculateZoomLevel(Rect rect)
         {
             return (((double)previewRes.Width / rect.Width()) + ((double)previewRes.Height / rect.Height())) / 2d;
         }
 
         /// <summary>
-        /// Stops motion in any direction if a boundary has been reached
+        /// Stops motion in any direction if a boundary has been reached.
         /// </summary>
-        /// <param name="rect">the new rectangle</param>
+        /// <param name="rect">the new rectangle.</param>
         private void CheckMotionBounds(Rect rect)
         {
             if (rect.Left <= 0 || rect.Right >= previewRes.Width)
@@ -753,9 +749,9 @@ namespace SubCTools.Droid.Camera
         /// <summary>
         /// If the aspect ratio of the rect doesn't match the aspect ratio of the preview due to
         /// integer casting this method corrects the rect height to match the rect width and aspect
-        /// ratio of the preview
+        /// ratio of the preview.
         /// </summary>
-        /// <param name="rect">the rectangle</param>
+        /// <param name="rect">the rectangle.</param>
         private void CorrectAspectRatio(Rect rect)
         {
             var prar = previewRect.AspectRatio();
@@ -820,10 +816,10 @@ namespace SubCTools.Droid.Camera
         }
 
         /// <summary>
-        /// Moves the frame by the amount specified in <see cref="translation" /> Calculates an
-        /// array of rect points to translate smoothly to the target using a logistic smoothing function.
+        /// Moves the frame by the amount specified in translation calculates an array of rect
+        /// points to translate smoothly to the target using a logistic smoothing function.
         /// </summary>
-        /// <param name="translation">a point indicating the amount and direction to move the frame</param>
+        /// <param name="translation">a point indicating the amount and direction to move the frame.</param>
         private void SmoothTranslation(System.Drawing.Point translation)
         {
             Task.Run(() =>
@@ -860,7 +856,7 @@ namespace SubCTools.Droid.Camera
         /// Calculates zoom values into array and steps through each value using a logistic function
         /// to smooth the zoom.
         /// </summary>
-        /// <param name="multiplier">The amount to zoom</param>
+        /// <param name="stepAmount">The amount to zoom.</param>
         private void SmoothZoom(float stepAmount)
         {
             Task.Run(() =>

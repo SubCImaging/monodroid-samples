@@ -6,20 +6,15 @@
 //-----------------------------------------------------------------------
 namespace SubCTools.Droid.Extensions
 {
-    using Android.App;
-    using Android.Content;
     using Android.Graphics;
-    using Android.OS;
-    using Android.Runtime;
-    using Android.Views;
-    using Android.Widget;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     public static class RectExtensions
     {
+        public static double AspectRatio(this Rect rect)
+        {
+            return rect.Width() / rect.Height();
+        }
+
         // Restrains the rect within a container rect while attempting to retain the current size.
         public static void Restrain(this Rect rect, Rect container)
         {
@@ -41,17 +36,12 @@ namespace SubCTools.Droid.Extensions
                 var dx = 0;
                 var dy = 0;
 
-                // Bounds checking
-                dx = CheckLowerBound(rect.Left, container.Left) + CheckUpperBound(rect.Right, container.Right);
+                // Bounds checking dx = CheckLowerBound(rect.Left, container.Left) +
+                CheckUpperBound(rect.Right, container.Right);
                 dy = CheckLowerBound(rect.Top, container.Top) + CheckUpperBound(rect.Bottom, container.Bottom);
 
                 rect.Offset(dx, dy);
             }
-        }
-
-        public static double AspectRatio(this Rect rect)
-        {
-            return rect.Width() / rect.Height();
         }
 
         private static int CheckLowerBound(int value, int lowerBound)

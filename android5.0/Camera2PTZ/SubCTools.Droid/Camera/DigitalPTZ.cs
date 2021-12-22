@@ -776,7 +776,7 @@ namespace SubCTools.Droid.Camera
                     // calculate the new target location and the steps to transition there
                     var targetFrame = new Rect(ViewRect);
                     targetFrame.Offset(translation.X, translation.Y);
-                    targetFrame.Restrain(previewRect);
+                    //targetFrame.Restrain(previewRect);
                     Zoom(targetFrame);
                 }
             });
@@ -831,7 +831,7 @@ namespace SubCTools.Droid.Camera
                     // calculate the new target location and the steps to transition there
                     var targetFrame = new Rect(ViewRect);
                     targetFrame.Offset(translation.X, translation.Y);
-                    targetFrame.Restrain(previewRect);
+                    //targetFrame.Restrain(previewRect);
                     var stepsLeft = CalculateSteps(ViewRect.Left, targetFrame.Left, transitionFrames, EaseOut);
                     var stepsTop = CalculateSteps(ViewRect.Top, targetFrame.Top, transitionFrames, EaseOut);
 
